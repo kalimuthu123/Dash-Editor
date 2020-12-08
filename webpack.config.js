@@ -24,6 +24,8 @@ module.exports = (env, argv) => {
         mode = 'production';
     }
 
+    
+
     let filename = (overrides.output || {}).filename;
     if(!filename) {
         const modeSuffix = mode === 'development' ? 'dev' : 'min';
@@ -44,6 +46,11 @@ module.exports = (env, argv) => {
     return {
         mode,
         entry,
+        performance: {
+            hints: false,
+            maxEntrypointSize: 512000,
+            maxAssetSize: 512000
+        },
         output: {
             path: path.resolve(__dirname, dashLibraryName),
             filename,

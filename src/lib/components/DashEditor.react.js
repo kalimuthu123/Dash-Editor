@@ -1,35 +1,55 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import plotly from 'plotly.js/dist/plotly';
+import PlotlyEditor from 'react-chart-editor';
+import 'react-chart-editor/lib/react-chart-editor.css';
+
+
+const dataSources = {
+  col1: [1, 2, 3], // eslint-disable-line no-magic-numbers
+  col2: [4, 3, 2], // eslint-disable-line no-magic-numbers
+  col3: [17, 13, 9], // eslint-disable-line no-magic-numbers
+};
+
+const dataSourceOptions = Object.keys(dataSources).map((name) => ({
+  value: name,
+  label: name,
+}));
+
+const config = {editable: true};
 
 /**
- * ExampleComponent is an example component.
+ * EditorComponent is an example component.
  * It takes a property, `label`, and
  * displays it.
  * It renders an input with the property `value`
  * which is editable by the user.
  */
 export default class DashEditor extends Component {
+
+	 constructor() {
+	    super();
+	    this.state = {data: [], layout: {}, frames: []};
+	  }
+
     render() {
         const {id, label, setProps, value} = this.props;
 
         return (
-            <div id={id}>
-                ExampleComponent: {label}&nbsp;
-                <input
-                    value={value}
-                    onChange={
-                        /*
-                         * Send the new value to the parent component.
-                         * setProps is a prop that is automatically supplied
-                         * by dash's front-end ("dash-renderer").
-                         * In a Dash app, this will update the component's
-                         * props and send the data back to the Python Dash
-                         * app server if a callback uses the modified prop as
-                         * Input or State.
-                         */
-                        e => setProps({ value: e.target.value })
-                    }
-                />
+            <div id={id} className="dashcharteditor">
+		        <PlotlyEditor
+		          data={this.state.data}
+		          layout={this.state.layout}
+		          config={config}
+		          frames={this.state.frames}
+		          dataSources={dataSources}
+		          dataSourceOptions={dataSourceOptions}
+		          plotly={plotly}
+		          onUpdate={(data, layout, frames) => this.setState({data, layout, frames})}
+		          useResizeHandler
+		          debug
+		          advancedTraceTypeSelector
+		        />
             </div>
         );
     }
