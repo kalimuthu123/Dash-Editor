@@ -13,11 +13,11 @@ It renders an input with the property `value`
 which is editable by the user.
 Keyword arguments:
 - `id` (String; optional): The ID used to identify this component in Dash callbacks.
-- `label` (String; required): A label that will be printed when this component is rendered.
-- `value` (String; optional): The value displayed in the input.
+- `dataSources` (Dict; required): The layout of the  components displayed inside the grid.
+- `fig` (Dict; optional): The layout of the  components displayed inside the grid.
 """
 function dasheditor(; kwargs...)
-        available_props = Symbol[:id, :label, :value]
+        available_props = Symbol[:id, :dataSources, :fig]
         wild_props = Symbol[]
         return Component("dasheditor", "DashEditor", "dash_editor", available_props, wild_props; kwargs...)
 end

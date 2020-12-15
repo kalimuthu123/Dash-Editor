@@ -10,15 +10,15 @@ EditorComponent is an example component. It takes a property, `label`, and displ
 }
 
 \usage{
-dashEditor(id=NULL, label=NULL, value=NULL)
+dashEditor(id=NULL, dataSources=NULL, fig=NULL)
 }
 
 \arguments{
 \item{id}{Character. The ID used to identify this component in Dash callbacks.}
 
-\item{label}{Character. A label that will be printed when this component is rendered.}
+\item{dataSources}{Named list. The layout of the  components displayed inside the grid.}
 
-\item{value}{Character. The value displayed in the input.}
+\item{fig}{Named list. The layout of the  components displayed inside the grid.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

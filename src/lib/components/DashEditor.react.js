@@ -5,16 +5,6 @@ import PlotlyEditor from 'react-chart-editor';
 import 'react-chart-editor/lib/react-chart-editor.css';
 
 
-const dataSources = {
-  col1: [1, 2, 3], // eslint-disable-line no-magic-numbers
-  col2: [4, 3, 2], // eslint-disable-line no-magic-numbers
-  col3: [17, 13, 9], // eslint-disable-line no-magic-numbers
-};
-
-const dataSourceOptions = Object.keys(dataSources).map((name) => ({
-  value: name,
-  label: name,
-}));
 
 const config = {editable: true};
 
@@ -29,14 +19,42 @@ export default class DashEditor extends Component {
 
 	 constructor() {
 	    super();
-	    this.state = {data: [], layout: {}, frames: []};
+	    this.state = {
+	    	data: [],
+            layout: {}, 
+            frames: []
+	    };
 	  }
 
-    render() {
-        const {id, label, setProps, value} = this.props;
+	componentWillMount() {
+         this.setState({ data : this.props.fig.data }); 
+         this.setState({ layout : this.props.fig.layout }); 
+         this.setState({ frames : this.props.fig.frames }); 
+       // this.makeditable();            
+    }
 
+    // static getDerivedStateFromProps(props, current_state) {
+    shouldComponentUpdate(nextProps, nextState) {
+       //console.log("props", nextProps);
+       //console.log("current_state", nextState);
+       let figure={ data : nextState.data , layout : nextState.layout , frames : nextState.frames }
+       //console.log("figure", figure);
+       this.props.setProps({ fig : figure });
+       return true;
+    }
+
+  
+    render() {
+        const {id, dataSources, setProps, fig} = this.props;
+        const dataSourceOptions = Object.keys(this.props.dataSources).map((name) => ({
+		  value: name,
+		  label: name,
+		}));
+        let myAttr = {'figure': JSON.stringify(this.props.fig) }
+        //console.log("props",this.props)
+        //console.log("stats",this.state)
         return (
-            <div id={id} className="dashcharteditor">
+            <div id={id} className="dashcharteditor"  {...myAttr} >
 		        <PlotlyEditor
 		          data={this.state.data}
 		          layout={this.state.layout}
@@ -63,15 +81,15 @@ DashEditor.propTypes = {
      */
     id: PropTypes.string,
 
-    /**
-     * A label that will be printed when this component is rendered.
+     /**
+     * The layout of the  components displayed inside the grid.
      */
-    label: PropTypes.string.isRequired,
+    dataSources :PropTypes.object.isRequired,
 
     /**
-     * The value displayed in the input.
+     * The layout of the  components displayed inside the grid.
      */
-    value: PropTypes.string,
+    fig : PropTypes.object,
 
     /**
      * Dash-assigned callback that should be called to report property changes
